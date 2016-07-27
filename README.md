@@ -11,7 +11,7 @@ add to your composer json
 }
 ```
 
-Add UnitellerPaymentFactory to payum:
+Add UnitellerGatewayFactory to payum:
 ```php
 <?php
 
@@ -21,7 +21,7 @@ namespace Acme\PaymentBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Fullpipe\Payum\Uniteller\Bridge\Symfony\UnitellerPaymentFactory;
+use Fullpipe\Payum\Uniteller\Bridge\Symfony\UnitellerGatewayFactory;
 
 class AcmePaymentBundle extends Bundle
 {

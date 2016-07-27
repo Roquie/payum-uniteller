@@ -2,34 +2,14 @@
 
 namespace Fullpipe\Payum\Uniteller\Action;
 
-use Payum\Core\Action\ActionInterface;
-use Payum\Core\ApiAwareInterface;
+use Fullpipe\Payum\Uniteller\Action\Api\BaseApiAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Exception\UnsupportedApiException;
 use Payum\Core\Reply\HttpPostRedirect;
 use Payum\Core\Request\Capture;
-use Fullpipe\Payum\Uniteller\Api;
 
-class CaptureAction implements ActionInterface, ApiAwareInterface
+class CaptureAction extends BaseApiAwareAction
 {
-    /**
-     * @var Api
-     */
-    protected $api;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setApi($api)
-    {
-        if (false === $api instanceof Api) {
-            throw new UnsupportedApiException('Not supported.');
-        }
-
-        $this->api = $api;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -44,18 +24,22 @@ class CaptureAction implements ActionInterface, ApiAwareInterface
             $details['URL_RETURN'] = $request->getToken()->getAfterUrl();
         }
 
-        $details['Shop_IDP'] = $this->api->getShopId();
+        $details['Shop_IDP']  = $this->api->getShopId();
         $details['Signature'] = $this->api->sing($details->toUnsafeArray());
 
-        $details->validatedKeysSet(array(
+        $details->validatedKeysSet([
             'Shop_IDP',
             'Order_IDP',
             'Subtotal_P',
-            'Signature',
             'Currency',
             'Signature',
-        ));
+        ]);
 
+        /*$url = $this->api->getPaymentPageUrl().'?'.http_build_query($details->toUnsafeArray());
+        echo '<pre>';
+        print_r($url);
+        echo '</pre>';
+        exit;*/
         throw new HttpPostRedirect($this->api->getPaymentPageUrl(), $details->toUnsafeArray());
     }
 

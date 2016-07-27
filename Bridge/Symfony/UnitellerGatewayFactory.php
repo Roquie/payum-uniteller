@@ -4,8 +4,8 @@ namespace Fullpipe\Payum\Uniteller\Bridge\Symfony;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\AbstractPaymentFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-
-class UnitellerPaymentFactory extends AbstractPaymentFactory
+// @todo: symfony support
+class UnitellerGatewayFactory extends AbstractPaymentFactory
 {
     /**
      * {@inheritDoc}
@@ -32,9 +32,9 @@ class UnitellerPaymentFactory extends AbstractPaymentFactory
     /**
      * {@inheritDoc}
      */
-    protected function getPayumPaymentFactoryClass()
+    protected function getPayumGatewayFactoryClass()
     {
-        return 'Fullpipe\Payum\Uniteller\PaymentFactory';
+        return UnitellerGatewayFactory::class;
     }
 
     /**

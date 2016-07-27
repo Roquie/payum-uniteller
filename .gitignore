@@ -1,0 +1,9 @@
+.idea/
+composer.phar
+/vendor/
+composer.lock
+.DS_Store
+
+# Icon must end with two \r
+Icon
+example.php

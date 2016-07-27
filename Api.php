@@ -115,23 +115,23 @@ class Api
     public function sing(array $params)
     {
         $singParams = array(
-            'Shop_IDP' => $this->getShopId(),
-            'Order_IDP' => '',
-            'Subtotal_P' => '',
-            'MeanType' => '',
-            'EMoneyType' => '',
-            'Lifetime' => '',
-            'Customer_IDP' => '',
-            'Card_IDP' => '',
-            'IDat' => '',
-            'PT_Code' => '',
-            'OrderLifetime' => '',
-            'password' => $this->getPassword(),
+            'Shop_IDP'      => $this->getShopId(),
+            'Order_IDP'     => '',
+            'Subtotal_P'    => '',
+            'MeanType'      => '',
+            'EMoneyType'    => '',
+            'Lifetime'      => '',
+            'Customer_IDP'  => '',
+            'Card_IDP'      => '',
+            'IData'         => '',
+            'PT_Code'       => '',
+            //'OrderLifetime' => '',
+            'password'      => $this->getPassword(),
         );
 
-        if ($this->isSandbox()) {
+        /*if ($this->isSandbox()) {
             unset($singParams['OrderLifetime']);
-        }
+        }*/
 
         $params = array_intersect_key($params, $singParams);
         $singParams = array_merge($singParams, $params);

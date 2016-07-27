@@ -2,34 +2,20 @@
 
 namespace Fullpipe\Payum\Uniteller\Action;
 
-use Fullpipe\Payum\Uniteller\Api;
+use Fullpipe\Payum\Uniteller\Action\Api\BaseApiAwareAction;
 use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Exception\UnsupportedApiException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\Notify;
 
-class NotifyAction extends PaymentAwareAction implements ApiAwareInterface
+class NotifyAction extends BaseApiAwareAction implements ApiAwareInterface, GatewayAwareInterface
 {
-    /**
-     * @var Api
-     */
-    protected $api;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setApi($api)
-    {
-        if (false === $api instanceof Api) {
-            throw new UnsupportedApiException('Not supported.');
-        }
-
-        $this->api = $api;
-    }
+    use GatewayAwareTrait;
 
     /**
      * {@inheritDoc}
@@ -41,7 +27,7 @@ class NotifyAction extends PaymentAwareAction implements ApiAwareInterface
         RequestNotSupportedException::assertSupports($this, $request);
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
-        $this->payment->execute($httpRequest = new GetHttpRequest());
+        $this->gateway->execute($httpRequest = new GetHttpRequest());
 
         if (false == $this->api->validateNotificationSignature($httpRequest->request)) {
             throw new HttpResponse('The notification is invalid', 400);
